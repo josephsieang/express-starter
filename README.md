@@ -75,4 +75,12 @@ npm run dev
   2. Open VS Code **Settings**.
   3. Search for `Prettier: Config Path` and set it to `.prettier.config.js`.
 
-This ensures consistent formatting across the team.
+🎯 Analogy: Express vs Angular Architecture
+
+| Concept       | Express (Backend)            | Angular (Frontend)             | Purpose                                  |
+| ------------- | ---------------------------- | ------------------------------ | ---------------------------------------- |
+| Route         | `app.get('/api/hello', ...)` | `HttpClient.get('/api/hello')` | Trigger a call or handler                |
+| Controller    | `hello.controller.ts`        | 🚫 (No direct equivalent)      | Handle HTTP request logic                |
+| Service       | `hello.service.ts`           | Service                        | Core logic / abstraction                 |
+| Middleware    | `logger.middleware.ts`       | Interceptor                    | Reusable logic between request & handler |
+| Error Handler | `error.middleware.ts`        | Interceptor                    | Handle errors uniformly                  |
