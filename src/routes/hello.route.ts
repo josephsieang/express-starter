@@ -1,10 +1,8 @@
 import { Router } from 'express';
-import { GREETING_NAME } from '../config/env';
+import { sayHello } from '../controllers/hello.controller';
 
 const router = Router();
 
-router.get('/', (req, res) => {
-  res.json({ message: `Hello, ${GREETING_NAME}!` });
-});
+router.get('/', sayHello);
 
 export default router;
