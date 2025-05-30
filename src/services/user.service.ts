@@ -4,7 +4,7 @@ import { CreateUserDto } from '../validators/user.schema';
 const users: CreateUserDto[] = [];
 
 export async function createUser(user: CreateUserDto): Promise<CreateUserDto> {
-  return prisma.user.create({ user });
+  return prisma.user.create({ data: user });
 }
 
 export async function getUsers(): Promise<CreateUserDto[]> {
