@@ -1,14 +1,16 @@
+import { prisma } from '../lib/prisma';
 import { CreateUserDto } from '../validators/user.schema';
 
 const users: CreateUserDto[] = [];
 
 export async function createUser(user: CreateUserDto): Promise<CreateUserDto> {
-  // Simulate a database operation
-  users.push(user);
-  return user;
+  return prisma.user.create({ user });
 }
 
 export async function getUsers(): Promise<CreateUserDto[]> {
-  // Simulate fetching users from a database
-  return users;
+  return prisma.user.findMany({
+    orderBy: {
+      createdAt: 'desc'
+    }
+  });
 }
