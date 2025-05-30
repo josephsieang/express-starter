@@ -14,7 +14,8 @@
   "description": "",
   "dependencies": {
     "dotenv": "^16.5.0",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "zod": "^3.25.41"
   },
   "devDependencies": {
     "@types/express": "^5.0.2",
