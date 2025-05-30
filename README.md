@@ -1,6 +1,6 @@
 # Express Starter
 
-A minimal Express.js starter template with TypeScript, esbuild, and Prettier integration. Below are the essential details and scripts to get started.
+A minimal Express.js starter template with TypeScript, esbuild, Prettier, and integrated PostgreSQL database using Prisma ORM. Below are the essential details and scripts to get started.
 
 ---
 
@@ -11,6 +11,7 @@ A minimal Express.js starter template with TypeScript, esbuild, and Prettier int
 - Prettier for code formatting
 - Simple, modular project structure
 - Environment configuration support
+- PostgreSQL database integration with Prisma ORM
 
 ---
 
@@ -20,6 +21,8 @@ Ensure you have the following installed:
 
 - **Node.js**: Version `v22.0.0` or higher
 - **npm**: Version `10.5.1` or higher
+- **Homebrew** (for macOS): [Install Homebrew](https://brew.sh/)
+- **PostgreSQL**: Install via Homebrew
 
 To verify your setup, run:
 
@@ -30,26 +33,78 @@ npm -v
 
 ---
 
+## Database Setup (PostgreSQL)
+
+1. **Install PostgreSQL (macOS):**
+
+   ```bash
+   brew install postgresql
+   brew services start postgresql
+   ```
+
+2. **Create your database:**
+
+   ```bash
+   createdb express-starter
+   ```
+
+3. **Configure your database connection:**
+
+   - Open the `.env` file in the project root.
+   - Set the `DATABASE_URL` variable. Example:
+     ```env
+     DATABASE_URL="postgresql://<your-username>@localhost:5432/express-starter"
+     ```
+
+4. **Define your data model:**
+
+   - Edit `prisma/schema.prisma` to define your models. Example:
+     ```prisma
+     model User {
+       id    Int    @id @default(autoincrement())
+       email String @unique
+       name  String
+     }
+     ```
+
+5. **Create database tables with Prisma Migrate:**
+
+   ```bash
+   npx prisma migrate dev --name init
+   ```
+
+6. **View and manage your database:**
+   - With Prisma Studio:
+     ```bash
+     npx prisma studio
+     ```
+   - Or use a GUI like [Postico 2](https://eggerapps.at/postico2/):
+     1. Download and install Postico 2 from the official website.
+     2. Launch Postico 2 and connect to your local PostgreSQL database using the same credentials as in your `.env` file.
+     3. You can now browse and manage your database visually.
+
+---
+
 ## Getting Started
 
 1. Clone the repository:
 
-```bash
-git clone <your-repo-url>
-cd express-starter
-```
+   ```bash
+   git clone <your-repo-url>
+   cd express-starter
+   ```
 
 2. Install the dependencies:
 
-```bash
-npm install
-```
+   ```bash
+   npm install
+   ```
 
 3. Start the development server:
 
-```bash
-npm run dev
-```
+   ```bash
+   npm run dev
+   ```
 
 ---
 
@@ -59,6 +114,8 @@ npm run dev
 - `npm run build`: Bundle the application using esbuild
 - `npm start`: Run the bundled server (production)
 - `npm run format`: Format all TypeScript files in the `src` directory using Prettier
+- `npx prisma migrate dev --name <name>`: Run a new database migration
+- `npx prisma studio`: Open Prisma Studio to view and edit your database
 
 ---
 
@@ -78,7 +135,12 @@ npm run dev
 │   ├── middlewares/      # Custom middleware (logger, error handler)
 │   ├── routes/           # Route definitions
 │   ├── services/         # Business logic/services
+│   ├── lib/
+│   │   └── prisma.ts     # Prisma client instance
 │   └── utils/            # Utility functions
+├── prisma/
+│   ├── schema.prisma     # Prisma data model
+│   └── migrations/       # Database migrations
 └── ...
 ```
 
@@ -102,9 +164,8 @@ npm run dev
 
 ## Environment Configuration
 
-- Environment variables are managed in `src/config/env.ts`.
-- Read environment variables from a `.env` file using `dotenv` or similar libraries.
-- Update `.env` file with your configuration settings. Then update `src/config/env.ts` to load these variables.
+- Environment variables are managed in `src/config/env.ts` and the `.env` file.
+- Update these files to add or change environment-specific settings.
 
 ---
 
