@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "node scripts/dev.mjs",
-    "build": "esbuild src/server.ts --bundle --platform=node --outfile=dist/server.js",
+    "generate": "prisma generate",
+    "dev": "npm run generate && node scripts/dev.mjs",
+    "build": "npm run generate &&  && esbuild src/server.ts --bundle --platform=node --outfile=dist/server.js",
     "start": "node dist/server.js",
     "format": "prettier --config .prettier.config.js --write \"src/**/*.ts\""
   },
