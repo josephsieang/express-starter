@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "node scripts/dev.mjs",
+    "build": "esbuild src/server.ts --bundle --platform=node --outfile=dist/server.js",
+    "start": "node dist/server.js",
+    "format": "prettier --config .prettier.config.js --write \"src/**/*.ts\""
   },
   "keywords": [],
   "author": "",
@@ -14,7 +17,7 @@
     "express": "^5.1.0"
   },
   "devDependencies": {
-"@types/express": "^5.0.2",
+    "@types/express": "^5.0.2",
     "chokidar": "^4.0.3",
     "esbuild": "^0.25.5",
     "prettier": "^3.5.3"
