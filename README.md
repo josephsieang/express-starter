@@ -9,7 +9,8 @@ A minimal Express.js starter template with TypeScript, esbuild, and Prettier int
 - Express.js server with TypeScript
 - Fast bundling with esbuild
 - Prettier for code formatting
-- Simple project structure
+- Simple, modular project structure
+- Environment configuration support
 
 ---
 
@@ -54,10 +55,32 @@ npm run dev
 
 ## Scripts
 
-- `npm run dev`: Start the development server (with hot reloading if configured)
+- `npm run dev`: Start the development server using `scripts/dev.mjs` (with hot reloading if configured)
 - `npm run build`: Bundle the application using esbuild
 - `npm start`: Run the bundled server (production)
 - `npm run format`: Format all TypeScript files in the `src` directory using Prettier
+
+---
+
+## Project Structure
+
+```
+/express-starter
+├── package.json
+├── scripts/
+│   └── dev.mjs           # Development server entry
+├── src/
+│   ├── app.ts            # Express app setup
+│   ├── server.ts         # Server bootstrap
+│   ├── config/
+│   │   └── env.ts        # Environment variable config
+│   ├── controllers/      # Route controllers
+│   ├── middlewares/      # Custom middleware (logger, error handler)
+│   ├── routes/           # Route definitions
+│   ├── services/         # Business logic/services
+│   └── utils/            # Utility functions
+└── ...
+```
 
 ---
 
@@ -75,7 +98,17 @@ npm run dev
   2. Open VS Code **Settings**.
   3. Search for `Prettier: Config Path` and set it to `.prettier.config.js`.
 
-🎯 Analogy: Express vs Angular Architecture
+---
+
+## Environment Configuration
+
+- Environment variables are managed in `src/config/env.ts`.
+- Read environment variables from a `.env` file using `dotenv` or similar libraries.
+- Update `.env` file with your configuration settings. Then update `src/config/env.ts` to load these variables.
+
+---
+
+## Analogy: Express vs Angular Architecture
 
 | Concept       | Express (Backend)            | Angular (Frontend)             | Purpose                                  |
 | ------------- | ---------------------------- | ------------------------------ | ---------------------------------------- |
