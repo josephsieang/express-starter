@@ -20,14 +20,14 @@ export function validate(
         break;
     }
 
+    if (source === 'body' && (dataToValidate == null || Object.keys(dataToValidate).length === 0)) {
+      const error = new ApiError('Bad Request', 'No data provided for update.', 400);
+      return next(error);
+    }
+
     const result = schema.safeParse(dataToValidate);
     if (!result.success) {
-      const error: ApiError = new ApiError(
-        'Bad Request',
-        'Validation failed',
-        400,
-        result.error.flatten().fieldErrors
-      );
+      const error = new ApiError('Bad Request', 'Validation failed', 400, result.error.flatten());
       return next(error);
     }
 

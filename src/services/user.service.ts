@@ -24,3 +24,13 @@ export async function deleteUser(id: string): Promise<void> {
     where: { id: Number(id) }
   });
 }
+
+export async function updateUser(
+  id: string,
+  userData: Partial<CreateUserDto>
+): Promise<CreateUserDto | null> {
+  return prisma.user.update({
+    where: { id: Number(id) },
+    data: userData
+  });
+}

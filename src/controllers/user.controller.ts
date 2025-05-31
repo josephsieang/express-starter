@@ -1,6 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
 import { CreateUserDto } from '../validators/user.schema';
-import { createUser, deleteUser, getUserById, getUsers } from '../services/user.service';
+import {
+  createUser,
+  deleteUser,
+  getUserById,
+  getUsers,
+  updateUser
+} from '../services/user.service';
 import { ApiError } from '../utils/api-error';
 
 export async function handleCreateUser(
@@ -56,6 +62,22 @@ export async function handleDeleteUser(
   try {
     const deleted = await deleteUser(userId);
     res.json(deleted);
+  } catch (err) {
+    next(new ApiError('UserNotFound', `User with ID ${userId} does not exist.`, 404));
+  }
+}
+
+export async function handleUpdateUser(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  const userId = req.params.id;
+  const userData = req.body as Partial<CreateUserDto>;
+
+  try {
+    const updatedUser = await updateUser(userId, userData);
+    res.status(200).json(updatedUser);
   } catch (err) {
     next(new ApiError('UserNotFound', `User with ID ${userId} does not exist.`, 404));
   }

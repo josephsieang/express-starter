@@ -3,7 +3,8 @@ import {
   handleCreateUser,
   handleDeleteUser,
   handleGetUserById,
-  handleGetUsers
+  handleGetUsers,
+  handleUpdateUser
 } from '../controllers/user.controller';
 import { validate } from '../middlewares/validate';
 import { CreateUserSchema, UserIdParamsSchema } from '../validators/user.schema';
@@ -14,5 +15,11 @@ router.post('/', validate(CreateUserSchema), handleCreateUser);
 router.get('/', handleGetUsers);
 router.get('/:id', validate(UserIdParamsSchema, 'params'), handleGetUserById);
 router.delete('/:id', validate(UserIdParamsSchema, 'params'), handleDeleteUser);
+router.put(
+  '/:id',
+  validate(UserIdParamsSchema, 'params'),
+  validate(CreateUserSchema, 'body'),
+  handleUpdateUser
+);
 
 export default router;
