@@ -14,3 +14,9 @@ export async function getUsers(): Promise<CreateUserDto[]> {
     }
   });
 }
+
+export async function getUserById(id: string): Promise<CreateUserDto | null> {
+  return prisma.user.findUnique({
+    where: { id: Number(id) }
+  });
+}

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { CreateUserDto, CreateUserSchema } from '../validators/user.schema';
-import { createUser, getUsers } from '../services/user.service';
+import { createUser, getUserById, getUsers } from '../services/user.service';
 
 export async function handleCreateUser(req: Request, res: Response): Promise<void> {
   const dto = req.body as CreateUserDto;
@@ -13,4 +13,21 @@ export async function handleGetUsers(_: Request, res: Response): Promise<void> {
   res.status(200).json({
     users
   });
+}
+
+export async function handleGetUserById(req: Request, res: Response): Promise<void> {
+  const userId = req.params.id;
+  const user = await getUserById(userId);
+
+  if (!user) {
+    res.status(404).json({
+      error: 'User not found',
+      message: `User with ID ${userId} does not exist.`,
+      status: 404,
+      timestamp: new Date().valueOf()
+    });
+    return;
+  }
+
+  res.status(200).json(user);
 }
