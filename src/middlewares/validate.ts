@@ -1,5 +1,6 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { ZodSchema } from 'zod';
+import { ApiError } from '../utils/api-error';
 
 export function validate(
   schema: ZodSchema,
@@ -21,13 +22,13 @@ export function validate(
 
     const result = schema.safeParse(dataToValidate);
     if (!result.success) {
-      res.status(400).json({
-        error: 'Bad Request',
-        message: result.error.flatten(),
-        status: 400,
-        timestamp: new Date().valueOf()
-      });
-      return;
+      const error: ApiError = new ApiError(
+        'Bad Request',
+        'Validation failed',
+        400,
+        result.error.flatten().fieldErrors
+      );
+      return next(error);
     }
 
     // If validation is successful, attach the parsed data to the respective request object part
