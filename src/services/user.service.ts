@@ -1,8 +1,6 @@
 import { prisma } from '../lib/prisma';
 import { CreateUserDto } from '../validators/user.schema';
 
-const users: CreateUserDto[] = [];
-
 export async function createUser(user: CreateUserDto): Promise<CreateUserDto> {
   return prisma.user.create({ data: user });
 }
