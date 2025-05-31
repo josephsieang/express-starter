@@ -6,7 +6,7 @@ export function validate(
   source: 'body' | 'params' | 'query' = 'body'
 ): RequestHandler {
   return (req: Request, res: Response, next: NextFunction) => {
-    let dataToValidate;
+    let dataToValidate: any;
     switch (source) {
       case 'params':
         dataToValidate = req.params;
