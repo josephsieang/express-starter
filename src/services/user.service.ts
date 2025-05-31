@@ -19,7 +19,7 @@ export async function getUserById(id: string): Promise<CreateUserDto | null> {
   });
 }
 
-export async function deleteUser(id: string): Promise<void> {
+export async function deleteUser(id: string): Promise<CreateUserDto | null> {
   return prisma.user.delete({
     where: { id: Number(id) }
   });
