@@ -12,6 +12,7 @@ export function bearerAuthHandler(req: Request, res: Response, next: NextFunctio
   const [type, credentials] = authHeader.split(' ');
   if (type !== 'Bearer' || !credentials) {
     res.status(401).json({ error: 'Invalid authorization format' });
+    return;
   }
 
   const validToken = BEARER_TOKEN;
