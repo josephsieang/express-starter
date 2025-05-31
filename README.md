@@ -131,13 +131,23 @@ npm -v
 │   ├── server.ts         # Server bootstrap
 │   ├── config/
 │   │   └── env.ts        # Environment variable config
-│   ├── controllers/      # Route controllers
-│   ├── middlewares/      # Custom middleware (logger, error handler)
+│   ├── controllers/      # Route controllers (hello, user)
+│   ├── middlewares/      # Custom middleware (logger, error handler, auth, validation)
+│   │   ├── logger.middleware.ts   # Request logging middleware
+│   │   ├── error.middleware.ts    # Error handling middleware
+│   │   ├── bearer-auth.middleware.ts # Bearer token authentication middleware
+│   │   └── validate.ts            # Request validation middleware
 │   ├── routes/           # Route definitions
-│   ├── services/         # Business logic/services
+│   │   ├── hello.route.ts
+│   │   ├── user.route.ts
+│   │   └── test.route.ts
+│   ├── services/         # Business logic/services (hello, user)
 │   ├── lib/
 │   │   └── prisma.ts     # Prisma client instance
-│   └── utils/            # Utility functions
+│   ├── utils/            # Utility functions
+│   │   └── api-error.ts  # API error helper
+│   └── validators/       # Request validation schemas
+│       └── user.schema.ts
 ├── prisma/
 │   ├── schema.prisma     # Prisma data model
 │   └── migrations/       # Database migrations
