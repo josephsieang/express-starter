@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-import { CreateUserDto } from '../validators/user.schema';
 import {
   createUser,
   deleteUser,
@@ -8,6 +7,7 @@ import {
   updateUser
 } from '../services/user.service';
 import { ApiError } from '../utils/api-error';
+import { User } from '@prisma/client';
 
 export async function handleCreateUser(
   req: Request,
@@ -15,7 +15,7 @@ export async function handleCreateUser(
   next: NextFunction
 ): Promise<void> {
   try {
-    const dto = req.body as CreateUserDto;
+    const dto = req.body as User;
     const user = await createUser(dto);
     res.status(201).json(user);
   } catch (err) {
@@ -73,7 +73,7 @@ export async function handleUpdateUser(
   next: NextFunction
 ): Promise<void> {
   const userId = req.params.id;
-  const userData = req.body as Partial<CreateUserDto>;
+  const userData = req.body as Partial<User>;
 
   try {
     const updatedUser = await updateUser(userId, userData);
