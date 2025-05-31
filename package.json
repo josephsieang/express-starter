@@ -5,7 +5,8 @@
   "scripts": {
     "generate": "prisma generate",
     "dev": "npm run generate && node scripts/dev.mjs",
-    "build": "npm run generate &&  && esbuild src/server.ts --bundle --platform=node --outfile=dist/server.js",
+    "build": "npm run generate && esbuild src/server.ts --bundle --platform=node --outfile=dist/server.js --sourcemap=inline",
+    "debug": "npm run build && node --inspect dist/server.js",
     "start": "node dist/server.js",
     "format": "prettier --config .prettier.config.js --write \"src/**/*.ts\""
   },
