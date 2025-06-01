@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { BEARER_TOKEN } from '../config/env';
 import jwt from 'jsonwebtoken';
-import type { UserAuthPayload } from '../models/user-auth-payload';
+import { UserAuthPayload } from '../models/user';
 
 const JWT_SECRET = BEARER_TOKEN;
 
