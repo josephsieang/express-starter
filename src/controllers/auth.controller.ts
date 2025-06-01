@@ -41,8 +41,9 @@ export async function handleLoginUser(
       return next(new ApiError('InvalidCredentials', 'Email or password is incorrect.', 401));
     }
 
-    const token = signToken(user.id, user.role);
-    res.json({ token, email });
+    const { id, role, name } = user;
+    const token = signToken(id, role);
+    res.json({ token, email, role, id, name });
   } catch (err) {
     next(new ApiError('LoginUserError', err instanceof Error ? err.message : 'Unknown error', 500));
   }
