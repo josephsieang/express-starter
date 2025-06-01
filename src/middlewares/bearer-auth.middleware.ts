@@ -21,5 +21,7 @@ export function bearerAuthHandler(req: Request, res: Response, next: NextFunctio
     return;
   }
 
+  req.user = user;
+
   next();
 }
