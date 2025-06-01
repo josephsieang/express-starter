@@ -1,11 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import {
-  createUser,
-  deleteUser,
-  getUserById,
-  getUsers,
-  updateUser
-} from '../services/user.service';
+import { deleteUser, getUserById, getUsers, updateUser } from '../services/user.service';
 import { ApiError } from '../utils/api-error';
 import { User } from '@prisma/client';
 import { omitFields, omitFieldsFromArray } from '../utils/omit-fields';
