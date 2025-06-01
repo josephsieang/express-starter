@@ -27,6 +27,7 @@
   "devDependencies": {
     "@types/express": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.9",
+    "@types/swagger-ui-express": "^4.1.8",
     "chokidar": "^4.0.3",
     "esbuild": "^0.25.5",
     "prettier": "^3.5.3",
