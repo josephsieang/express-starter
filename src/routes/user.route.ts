@@ -6,7 +6,7 @@ import {
   handleGetUsers,
   handleUpdateUser
 } from '../controllers/user.controller';
-import { validate } from '../middlewares/validate';
+import { validate } from '../middlewares/validate.middleware';
 import { CreateUserSchema, UserIdParamsSchema } from '../validators/user.schema';
 
 const router = Router();
