@@ -17,8 +17,7 @@ export async function handleRegisterUser(
       email,
       password: hashed
     });
-    const { id, name, email } = user; // Extract non-sensitive fields
-    res.status(201).json({ id, name, email });
+    res.status(201).json({ name, email, id: user.id });
   } catch (err) {
     if (isPrismaUniqueConstraintError(err)) {
       return next(new ApiError('UserAlreadyExists', 'Email already exists.', 409));
