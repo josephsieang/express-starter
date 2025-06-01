@@ -191,6 +191,65 @@ GET /api/docs
 - The documentation is generated from your route and model definitions.
 - You can try out endpoints directly from the Swagger UI.
 
+### Why We Need Explicit Swagger Setup
+
+This project uses a custom Swagger UI setup in `src/docs/swagger-setup.ts` instead of the standard `swagger-ui-express` configuration. Here's why:
+
+#### The Problem: esbuild Bundling Issues
+
+**Standard Setup (Doesn't Work):**
+
+```typescript
+// This should work but fails due to esbuild
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+```
+
+**The Issue:**
+
+- **esbuild bundles everything** into a single file (`dist/server.js`)
+- **`__dirname` changes** - Points to `dist/` instead of the original source location
+- **Static asset paths break** - `swagger-ui-express` can't find its CSS/JS files because they're still in `node_modules/swagger-ui-dist` but the bundle expects them relative to the new `__dirname`
+- **JavaScript files return HTML** - Instead of serving `.js` files, the server returns HTML error pages, causing "Unexpected token '<'" errors
+
+#### Our Solution:
+
+```typescript
+// 1. Serve the swagger spec as JSON first
+app.get('/api-docs/swagger.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
+
+// 2. Explicitly serve static assets from the correct location
+app.use('/api-docs', express.static(path.join(__dirname, '../node_modules/swagger-ui-dist')));
+
+// 3. Setup Swagger UI middleware and interface
+app.use('/api-docs', swaggerUi.serve);
+app.get(
+  '/api-docs',
+  swaggerUi.setup(swaggerSpec, {
+    swaggerOptions: { url: '/api-docs/swagger.json' }
+  })
+);
+```
+
+**Why Each Part is Needed:**
+
+1. **Manual swagger.json endpoint with explicit Content-Type** - The critical part is `res.setHeader('Content-Type', 'application/json')`. Without this explicit header, the swagger spec might be served with incorrect content type (like `text/html`), causing Swagger UI to fail parsing the API specification. `swagger-ui-express` normally handles this automatically, but esbuild bundling can interfere with the library's internal content-type detection.
+
+2. **Manual static serving** - We explicitly tell Express where to find Swagger UI assets (CSS, JS files) since esbuild changes the path resolution.
+
+3. **Custom swaggerOptions.url** - We point Swagger UI to our manually created JSON endpoint instead of relying on the library's automatic detection.
+
+**Why This Works:**
+
+- **Manual static serving** - We explicitly tell Express where to find Swagger UI assets
+- **Correct path resolution** - `../node_modules/swagger-ui-dist` correctly resolves from `dist/` back to `node_modules/`
+- **Proper content types** - JavaScript files serve as `text/javascript` instead of HTML
+- **Guaranteed JSON endpoint** - Swagger UI can always fetch the API spec from our explicit endpoint
+
+Our explicit setup is the cleanest solution that maintains fast esbuild compilation while ensuring Swagger UI works correctly.
+
 ---
 
 ## Analogy: Express vs Angular Architecture
