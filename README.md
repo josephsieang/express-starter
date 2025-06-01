@@ -179,6 +179,20 @@ npm -v
 
 ---
 
+## API Documentation (Swagger)
+
+Interactive API documentation is available via **Swagger UI** at:
+
+```
+GET /api/docs
+```
+
+- Open [http://localhost:3001/api-docs](http://localhost:3001/api-docs) in your browser after starting the server.
+- The documentation is generated from your route and model definitions.
+- You can try out endpoints directly from the Swagger UI.
+
+---
+
 ## Analogy: Express vs Angular Architecture
 
 | Concept       | Express (Backend)            | Angular (Frontend)             | Purpose                                  |
