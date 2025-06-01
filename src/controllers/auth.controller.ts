@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { comparePassword, hashPassword, signToken } from '../lib/auth';
 import { login, registerUser } from '../services/auth.service';
 import { ApiError } from '../utils/api-error';
+import { isPrismaUniqueConstraintError } from '../utils/prisma-error';
 
 export async function handleRegisterUser(
   req: Request,
@@ -18,6 +19,9 @@ export async function handleRegisterUser(
     });
     res.status(201).json(user);
   } catch (err) {
+    if (isPrismaUniqueConstraintError(err)) {
+      return next(new ApiError('UserAlreadyExists', 'Email already exists.', 409));
+    }
     next(
       new ApiError('RegisterUserError', err instanceof Error ? err.message : 'Unknown error', 500)
     );
