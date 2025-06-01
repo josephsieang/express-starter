@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import { hashPassword } from '../lib/auth';
-import { registerUser } from '../services/auth.service';
+import { comparePassword, hashPassword, signToken } from '../lib/auth';
+import { login, registerUser } from '../services/auth.service';
 import { ApiError } from '../utils/api-error';
 
 export async function handleRegisterUser(
@@ -21,5 +21,25 @@ export async function handleRegisterUser(
     next(
       new ApiError('RegisterUserError', err instanceof Error ? err.message : 'Unknown error', 500)
     );
+  }
+}
+
+export async function handleLoginUser(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const { email, password } = req.body;
+    const user = await login({ email, password });
+
+    if (!user || !(await comparePassword(password, user.password || ''))) {
+      return next(new ApiError('InvalidCredentials', 'Email or password is incorrect.', 401));
+    }
+
+    const token = signToken(user.id, user.role);
+    res.json({ token });
+  } catch (err) {
+    next(new ApiError('LoginUserError', err instanceof Error ? err.message : 'Unknown error', 500));
   }
 }
