@@ -9,6 +9,7 @@ import {
 import { ApiError } from '../utils/api-error';
 import { User } from '@prisma/client';
 import { omitFields, omitFieldsFromArray } from '../utils/omit-fields';
+import { isPrismaUniqueConstraintError } from '../utils/prisma-error';
 
 export async function handleCreateUser(
   req: Request,
@@ -80,6 +81,10 @@ export async function handleUpdateUser(
     const updatedUser = await updateUser(userId, userData);
     res.status(200).json(omitFields(updatedUser, ['password']));
   } catch (err) {
+    if (isPrismaUniqueConstraintError(err)) {
+      next(new ApiError('UserAlreadyExists', 'Email already exists.', 409));
+    } else {
     next(new ApiError('UserNotFound', `User with ID ${userId} does not exist.`, 404));
+}
   }
 }
