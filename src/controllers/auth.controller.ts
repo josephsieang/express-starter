@@ -38,7 +38,7 @@ export async function handleLoginUser(
     }
 
     const token = signToken(user.id, user.role);
-    res.json({ token });
+    res.json({ token, email });
   } catch (err) {
     next(new ApiError('LoginUserError', err instanceof Error ? err.message : 'Unknown error', 500));
   }
