@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { BEARER_TOKEN } from '../config/env';
+import { verifyToken } from '../lib/auth';
 
 export function bearerAuthHandler(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization;
@@ -9,14 +9,14 @@ export function bearerAuthHandler(req: Request, res: Response, next: NextFunctio
     return;
   }
 
-  const [type, credentials] = authHeader.split(' ');
-  if (type !== 'Bearer' || !credentials) {
+  const [type, token] = authHeader.split(' ');
+  if (type !== 'Bearer' || !token) {
     res.status(401).json({ error: 'Invalid authorization format' });
     return;
   }
 
-  const validToken = BEARER_TOKEN;
-  if (credentials !== validToken) {
+  const user = verifyToken(token);
+  if (!user) {
     res.status(401).json({ error: 'Invalid or expired token' });
     return;
   }
