@@ -13,5 +13,3 @@ export const UserIdParamsSchema = z.object({
     })
     .transform(Number)
 });
-
-export type UserIdParamsDto = z.infer<typeof UserIdParamsSchema>;
