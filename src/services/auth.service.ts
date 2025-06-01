@@ -8,8 +8,8 @@ export async function registerUser(userData: UserRegisterPayload): Promise<User>
   });
 }
 
-export async function login(userData: UserLoginPayload): Promise<User | null> {
+export async function login(email: string): Promise<User | null> {
   return prisma.user.findUnique({
-    where: { email: userData.email }
+    where: { email }
   });
 }

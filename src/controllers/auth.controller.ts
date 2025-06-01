@@ -35,7 +35,7 @@ export async function handleLoginUser(
 ): Promise<void> {
   try {
     const { email, password } = req.body;
-    const user = await login({ email, password });
+    const user = await login(email);
 
     if (!user || !(await comparePassword(password, user.password || ''))) {
       return next(new ApiError('InvalidCredentials', 'Email or password is incorrect.', 401));
